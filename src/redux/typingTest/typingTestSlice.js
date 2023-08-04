@@ -8,7 +8,20 @@ export const typingTestSlice = createSlice({
     completedCount: 0,
     input: "",
   },
-  reducers: {},
+  reducers: {
+    handleInputChange: (state, action) => {
+      const input = action.payload
+
+      if(input !== " " && input.slice(-1) !== " ") {
+        state.input = input
+      }
+
+      else {
+        state.input = ""
+      }
+      
+    }
+  },
 });
 
 export default typingTestSlice.reducer;
