@@ -2,7 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const typingTestSlice = createSlice({
   name: "typingTest",
-  initialState: {},
+  initialState: {
+    correctTypedWordIndexes: [],
+    WPM: 0,
+    completedCount: 0,
+    input: "",
+  },
   reducers: {},
 });
 
