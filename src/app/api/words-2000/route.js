@@ -1,4 +1,6 @@
-export async function GET(request) {
+import { NextResponse } from "next/server";
+
+export async function GET() {
   const wordList = [
     "a",
     "ability",
@@ -2296,5 +2298,5 @@ export async function GET(request) {
     arbitraryList.push(element);
   }
 
-  return arbitraryList;
+  return NextResponse.json(arbitraryList);
 }

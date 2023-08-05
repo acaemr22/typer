@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server";
+
 export async function GET(request) {
   const wordList = [
     "April",
@@ -3156,5 +3158,5 @@ export async function GET(request) {
   }
   console.log(arbitraryList);
 
-  return wordList;
+  return NextResponse.json(arbitraryList);
 }
