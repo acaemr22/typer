@@ -21,6 +21,7 @@ export const typingTestSlice = createSlice({
     fetchWordList: {
       status: "idle",
     },
+    limits: { start: 0, end: 36, diff: 36 },
   },
   reducers: {
     handleInputChange: (state, action) => {
