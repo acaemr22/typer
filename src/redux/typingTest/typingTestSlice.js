@@ -21,16 +21,38 @@ export const typingTestSlice = createSlice({
     fetchWordList: {
       status: "idle",
     },
+    wordClassNames: 0,
+    currentWord: "",
+    currentWordState: "idle",
     limits: { start: 0, end: 36, diff: 36 },
   },
   reducers: {
     handleInputChange: (state, action) => {
-      const input = action.payload;
-
-      if (input !== " " && input.slice(-1) !== " ") {
+      const input = action.payload.input;
+      if (!/\s+/g.test(input)) {
         state.input = input;
+
+        state.wordClassNames = !input
+          ? 0
+          : state.currentWord.includes(input)
+          ? 1
+          : 2;
       } else {
+        if (/\S+\s$/g.test(input)) {
+          const { limits, completedCount } = state;
+          if (limits.end == completedCount + 1) {
+            state.limits.start += state.limits.diff;
+            state.limits.end += state.limits.diff;
+          }
+
+          if (input.slice(0, -1) == state.currentWord) {
+            state.correctTypedWordIndexes.push(completedCount);
+          }
+          state.currentWord = state.wordList[completedCount + 1];
+          state.wordClassNames = 0;
+        }
         state.input = "";
+        state.completedCount++;
       }
     },
   },
@@ -39,6 +61,7 @@ export const typingTestSlice = createSlice({
     builder.addCase(fetchWordList.fulfilled, (state, action) => {
       state.status = "succeeded";
       state.wordList = action.payload;
+      state.currentWord = action.payload[state.completedCount];
     });
     builder.addCase(fetchWordList.rejected, (state, action) => {
       state.status = "failed";

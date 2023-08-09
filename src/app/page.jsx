@@ -1,4 +1,5 @@
 import WordList from "@/components/WordList";
+import WordInput from "@/components/WordInput";
 
 export default function Page() {
   return (
@@ -8,6 +9,7 @@ export default function Page() {
       </secton>
       <section className="px-24">
         <WordList />
+        <WordInput />
       </section>
     </main>
   );
