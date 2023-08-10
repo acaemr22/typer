@@ -25,6 +25,10 @@ export const typingTestSlice = createSlice({
     currentWord: "",
     currentWordState: "idle",
     limits: { start: 0, end: 36, diff: 36 },
+    timer: {
+      time: 60,
+      status: "idle",
+    },
   },
   reducers: {
     handleInputChange: (state, action) => {
@@ -50,9 +54,35 @@ export const typingTestSlice = createSlice({
           }
           state.currentWord = state.wordList[completedCount + 1];
           state.wordClassNames = 0;
+          state.completedCount++;
         }
         state.input = "";
-        state.completedCount++;
+      }
+      // when a user entered an input or character timer will start
+      if (state.timer.status === "finished" || state.timer.status === "idle") {
+        state.timer.status = "pending";
+      }
+    },
+
+    handleRestart: (state) => {
+      state.correctTypedWordIndexes = [];
+      state.completedCount = 0;
+      state.input = "";
+      state.wordClassNames = 0;
+      state.limits = { start: 0, end: 36, diff: 36 };
+      state.timer.time = 60;
+      state.timer.status = "finished";
+    },
+
+    handleFinish: (state) => {
+      const { correctTypedWordIndexes } = state;
+      state.WPM = correctTypedWordIndexes.length;
+    },
+
+    decreaseTimer: (state) => {
+      if (state.timer.time > 1) state.timer.time--;
+      else {
+        state.timer.status = "finished";
       }
     },
   },
@@ -71,4 +101,5 @@ export const typingTestSlice = createSlice({
 });
 
 export default typingTestSlice.reducer;
-export const { handleInputChange } = typingTestSlice.actions;
+export const { handleInputChange, handleRestart, decreaseTimer, handleFinish } =
+  typingTestSlice.actions;

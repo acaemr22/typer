@@ -1,22 +1,58 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { handleInputChange } from "@/redux/typingTest/typingTestSlice";
+import { useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  handleInputChange,
+  handleRestart,
+  fetchWordList,
+  decreaseTimer,
+  handleFinish,
+} from "@/redux/typingTest/typingTestSlice";
 
 const WordInput = () => {
+  const intervalRef = useRef(null);
+  const {
+    input,
+    timer: { status },
+  } = useSelector((state) => state.typingTest);
   const dispatch = useDispatch();
-  const val = useSelector((state) => state.typingTest.input);
+
+  useEffect(() => {
+    if (status === "pending") {
+      handleInterval();
+    } else if (status === "finished") {
+      clearInterval(intervalRef.current);
+      dispatch(handleFinish());
+      handleClick();
+    }
+  }, [status]);
+
+  const handleInterval = () => {
+    const intervalId = setInterval(() => {
+      dispatch(decreaseTimer());
+    }, 1000);
+    intervalRef.current = intervalId;
+  };
+
+  const handleClick = () => {
+    dispatch(handleRestart());
+    dispatch(fetchWordList({ wordListType: "words-2000" }));
+  };
+
+  const handleInput = (e) => {
+    dispatch(handleInputChange({ input: e.target.value }));
+  };
 
   return (
-    <div className="flex items-center justify-center py-5">
+    <div className="flex items-center justify-center bg-gray-200 rounded-b-lg pr-2 gap-x-3">
       <input
-        className="border-slate border rounded-lg px-2 py-1"
+        className="border-slate border outline-none rounded-b-lg w-full px-2 py-1"
         type="text"
-        value={val}
-        onChange={(e) => dispatch(handleInputChange({ input: e.target.value }))}
+        value={input}
+        onChange={(e) => handleInput(e)}
       />
+      <button onClick={handleClick}>Restart</button>
     </div>
   );
 };
