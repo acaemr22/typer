@@ -14,6 +14,7 @@ const WordInput = () => {
   const {
     input,
     timer: { status },
+    wordListType,
   } = useSelector((state) => state.typingTest);
   const dispatch = useDispatch();
 
@@ -35,7 +36,7 @@ const WordInput = () => {
 
   const handleClick = () => {
     clearInterval(intervalRef.current);
-    dispatch(fetchWordList({ wordListType: "words-2000" }));
+    dispatch(fetchWordList({ wordListType: wordListType }));
   };
 
   const handleInput = (e) => {

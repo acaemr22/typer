@@ -15,6 +15,7 @@ export const typingTestSlice = createSlice({
   initialState: {
     correctTypedWordIndexes: [],
     WPM: 0,
+    wordListType: "words-2000",
     completedCount: 0,
     input: "",
     wordList: [],
@@ -93,11 +94,15 @@ export const typingTestSlice = createSlice({
         state.timer.status = "finished";
       }
     },
+
+    changeWordList: (state, action) => {
+      state.wordListType = action.payload;
+    },
   },
 
   extraReducers: (builder) => {
     builder.addCase(fetchWordList.fulfilled, (state, action) => {
-      state.status = "succeeded";
+      state.fetchWordList.status = "succeeded";
       state.wordList = action.payload;
       state.currentWord = action.payload[state.completedCount];
       state.correctTypedWordIndexes = [];
@@ -109,12 +114,19 @@ export const typingTestSlice = createSlice({
       state.timer.status = "restart";
     });
     builder.addCase(fetchWordList.rejected, (state, action) => {
-      state.status = "failed";
+      state.fetchWordList.status = "failed";
       state.wordList = action.error.message;
+    });
+    builder.addCase(fetchWordList.pending, (state) => {
+      state.fetchWordList.status = "pending";
     });
   },
 });
 
 export default typingTestSlice.reducer;
-export const { handleInputChange, decreaseTimer, handleFinish } =
-  typingTestSlice.actions;
+export const {
+  handleInputChange,
+  decreaseTimer,
+  handleFinish,
+  changeWordList,
+} = typingTestSlice.actions;
