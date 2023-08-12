@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   handleInputChange,
-  handleRestart,
   fetchWordList,
   decreaseTimer,
   handleFinish,
@@ -22,7 +21,6 @@ const WordInput = () => {
     if (status === "pending") {
       handleInterval();
     } else if (status === "finished") {
-      clearInterval(intervalRef.current);
       dispatch(handleFinish());
       handleClick();
     }
@@ -36,7 +34,7 @@ const WordInput = () => {
   };
 
   const handleClick = () => {
-    dispatch(handleRestart());
+    clearInterval(intervalRef.current);
     dispatch(fetchWordList({ wordListType: "words-2000" }));
   };
 

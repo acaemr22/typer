@@ -1,6 +1,7 @@
 import WordList from "@/components/WordList";
 import WordInput from "@/components/WordInput";
 import Stats from "@/components/Stats";
+import Result from "@/components/Result";
 
 export default function Page() {
   return (
@@ -13,6 +14,7 @@ export default function Page() {
         <WordList />
         <WordInput />
       </section>
+      <Result />
     </main>
   );
 }

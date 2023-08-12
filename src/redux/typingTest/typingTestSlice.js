@@ -29,6 +29,7 @@ export const typingTestSlice = createSlice({
       time: 60,
       status: "idle",
     },
+    results: [],
   },
   reducers: {
     handleInputChange: (state, action) => {
@@ -59,24 +60,31 @@ export const typingTestSlice = createSlice({
         state.input = "";
       }
       // when a user entered an input or character timer will start
-      if (state.timer.status === "finished" || state.timer.status === "idle") {
+      if (
+        state.timer.status === "finished" ||
+        state.timer.status === "idle" ||
+        state.timer.status === "restart"
+      ) {
         state.timer.status = "pending";
       }
     },
 
-    handleRestart: (state) => {
-      state.correctTypedWordIndexes = [];
-      state.completedCount = 0;
-      state.input = "";
-      state.wordClassNames = 0;
-      state.limits = { start: 0, end: 36, diff: 36 };
-      state.timer.time = 60;
-      state.timer.status = "finished";
-    },
-
     handleFinish: (state) => {
-      const { correctTypedWordIndexes } = state;
+      const { correctTypedWordIndexes, completedCount } = state;
       state.WPM = correctTypedWordIndexes.length;
+      state.results.unshift({
+        wpm: correctTypedWordIndexes.length,
+        correctNum: correctTypedWordIndexes.length,
+        wrongNum: completedCount - correctTypedWordIndexes.length,
+        accuracy:
+          (
+            correctTypedWordIndexes.length /
+            (completedCount ? completedCount : 1)
+          ).toFixed(2) * 100,
+      });
+      if (state.results.length === 8) {
+        state.results.pop();
+      }
     },
 
     decreaseTimer: (state) => {
@@ -92,6 +100,13 @@ export const typingTestSlice = createSlice({
       state.status = "succeeded";
       state.wordList = action.payload;
       state.currentWord = action.payload[state.completedCount];
+      state.correctTypedWordIndexes = [];
+      state.completedCount = 0;
+      state.input = "";
+      state.wordClassNames = 0;
+      state.limits = { start: 0, end: 36, diff: 36 };
+      state.timer.time = 60;
+      state.timer.status = "restart";
     });
     builder.addCase(fetchWordList.rejected, (state, action) => {
       state.status = "failed";
@@ -101,5 +116,5 @@ export const typingTestSlice = createSlice({
 });
 
 export default typingTestSlice.reducer;
-export const { handleInputChange, handleRestart, decreaseTimer, handleFinish } =
+export const { handleInputChange, decreaseTimer, handleFinish } =
   typingTestSlice.actions;
