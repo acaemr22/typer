@@ -4,7 +4,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const fetchWordList = createAsyncThunk(
   "typingTest/fetchWordList",
   async ({ wordListType }) => {
-    const res = await fetch(`${proces.env.DOMAIN}/api/${wordListType}`);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/${wordListType}`
+    );
     const data = await res.json();
     return data;
   }
