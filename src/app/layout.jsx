@@ -1,5 +1,4 @@
 import "./globals.css";
-import * as React from "react";
 import Providers from "@/components/Providers";
 import Footer from "@/components/Footer";
 

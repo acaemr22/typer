@@ -1,11 +1,10 @@
-import React from "react";
-
 const Footer = () => (
   <div className="flex flex-col gap-y-5 items-center justify-end py-5 sm:py-20">
     <div className="flex flex-row gap-x-10">
       <a
         href="https://github.com/acaemr22"
         target="_blank"
+        rel="noreferrer"
         className="flex flex-row items-center justify-center gap-x-2 text-white text-md bg-blue-600 p-2 px-3 rounded-lg hover:bg-blue-400"
       >
         <svg
@@ -23,6 +22,7 @@ const Footer = () => (
       <a
         href="https://github.com/acaemr22/typer"
         target="_blank"
+        rel="noreferrer"
         className="flex flex-row items-center justify-center gap-x-2 text-white text-md bg-orange-600 p-2 px-3 rounded-lg hover:bg-orange-400"
       >
         <svg

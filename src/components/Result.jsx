@@ -1,7 +1,6 @@
 "use client";
 
 import { useSelector } from "react-redux";
-import React from "react";
 
 const Result = () => {
   const results = useSelector((state) => state.typingTest.results);
@@ -46,7 +45,7 @@ const Result = () => {
         </div>
       ) : (
         <div className="text-center w-full italic text-gray-400 font-semibold ">
-          There aren't any results to show.
+          {"There aren't any results to show."}
         </div>
       )}
     </section>
