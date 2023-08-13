@@ -1,6 +1,5 @@
 "use client";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Word from "./Word";
 import { fetchWordList } from "@/redux/typingTest/typingTestSlice";
 import { useEffect } from "react";
@@ -15,9 +14,11 @@ const WordList = () => {
     wordClassNames,
     correctTypedWordIndexes,
     wordListType,
+    intervalId,
   } = useSelector((state) => state.typingTest);
 
   useEffect(() => {
+    clearInterval(intervalId);
     dispatch(fetchWordList({ wordListType: wordListType }));
   }, [wordListType]);
 

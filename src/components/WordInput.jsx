@@ -7,12 +7,13 @@ import {
   fetchWordList,
   decreaseTimer,
   handleFinish,
+  changeIntervalId,
 } from "@/redux/typingTest/typingTestSlice";
 
 const WordInput = () => {
-  const intervalRef = useRef(null);
   const {
     input,
+    intervalId,
     timer: { status },
     wordListType,
   } = useSelector((state) => state.typingTest);
@@ -31,11 +32,11 @@ const WordInput = () => {
     const intervalId = setInterval(() => {
       dispatch(decreaseTimer());
     }, 1000);
-    intervalRef.current = intervalId;
+    dispatch(changeIntervalId(intervalId));
   };
 
   const handleClick = () => {
-    clearInterval(intervalRef.current);
+    clearInterval(intervalId);
     dispatch(fetchWordList({ wordListType: wordListType }));
   };
 

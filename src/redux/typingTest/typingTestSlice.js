@@ -24,6 +24,7 @@ export const typingTestSlice = createSlice({
     fetchWordList: {
       status: "idle",
     },
+    intervalId: "",
     wordClassNames: 0,
     currentWord: "",
     currentWordState: "idle",
@@ -100,6 +101,9 @@ export const typingTestSlice = createSlice({
     changeWordList: (state, action) => {
       state.wordListType = action.payload;
     },
+    changeIntervalId: (state, action) => {
+      state.intervalId = action.payload;
+    },
   },
 
   extraReducers: (builder) => {
@@ -131,4 +135,5 @@ export const {
   decreaseTimer,
   handleFinish,
   changeWordList,
+  changeIntervalId,
 } = typingTestSlice.actions;
